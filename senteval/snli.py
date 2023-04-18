@@ -92,7 +92,7 @@ class SNLIEval(object):
                     logging.info("PROGRESS (encoding): %.2f%%" %
                                  (100 * ii / n_labels))
             self.X[key] = np.vstack(enc_input)
-            self.y[key] = np.ndarray([dico_label[y] for y in mylabels])
+            self.y[key] = [dico_label[y] for y in mylabels]
 
         config = {'nclasses': 3, 'seed': self.seed,
                   'usepytorch': params.usepytorch,
@@ -104,6 +104,7 @@ class SNLIEval(object):
         config_classifier['epoch_size'] = 1
         config['classifier'] = config_classifier
 
+        self.y = np.ndarray(self.y)
         clf = SplitClassifier(self.X, self.y, config)
         devacc, testacc = clf.run()
         logging.debug('Dev acc : {0} Test acc : {1} for SNLI\n'
