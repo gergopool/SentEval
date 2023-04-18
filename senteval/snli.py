@@ -104,7 +104,9 @@ class SNLIEval(object):
         config_classifier['epoch_size'] = 1
         config['classifier'] = config_classifier
 
-        self.y = np.ndarray(self.y)
+        for key in self.y:
+            self.y[key] = np.ndarray(self.y[key])
+            
         clf = SplitClassifier(self.X, self.y, config)
         devacc, testacc = clf.run()
         logging.debug('Dev acc : {0} Test acc : {1} for SNLI\n'
